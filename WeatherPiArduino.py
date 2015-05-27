@@ -171,24 +171,24 @@ while True:
 	print "DS3231 Temperature= \t%0.2f C" % ds3231.getTemp()
 	# do the AT24C32 eeprom
 
-	print "----------------- "
-	print "----------------- "
-	print " AT24C32 EEPROM"
-	print "----------------- "
-	print "writing first 4 addresses with random data"
-	for x in range(0,4):
-		value = random.randint(0,255)
-		print "address = %i writing value=%i" % (x, value) 	
-		ds3231.write_AT24C32_byte(x, value)
-	print "----------------- "
+	# print "----------------- "
+	# print "----------------- "
+	# print " AT24C32 EEPROM"
+	# print "----------------- "
+	# print "writing first 4 addresses with random data"
+	# for x in range(0,4):
+	# 	value = random.randint(0,255)
+	# 	print "address = %i writing value=%i" % (x, value) 	
+	# 	ds3231.write_AT24C32_byte(x, value)
+	# print "----------------- "
 
-	print "reading first 4 addresses"
-	for x in range(0,4):
-		print "address = %i value = %i" %(x, ds3231.read_AT24C32_byte(x)) 
-	print "----------------- "
-	print "----------------- "
-	print " BMP180 Barometer/Temp/Altitude"
-	print "----------------- "
+	# print "reading first 4 addresses"
+	# for x in range(0,4):
+	# 	print "address = %i value = %i" %(x, ds3231.read_AT24C32_byte(x)) 
+	# print "----------------- "
+	# print "----------------- "
+	# print " BMP180 Barometer/Temp/Altitude"
+	# print "----------------- "
 
 	print 'Temperature = \t{0:0.2f} C'.format(bmp180.read_temperature())
 	print 'Pressure = \t{0:0.2f} KPa'.format(bmp180.read_pressure()/1000)
@@ -211,48 +211,48 @@ while True:
 	print "Humidity = \t%0.2f %%" % HTUhumidity
 	print "----------------- "
 
-	print "----------------- "
-	print " AS3853 Lightning Detector "
-	print "----------------- "
+	# print "----------------- "
+	# print " AS3853 Lightning Detector "
+	# print "----------------- "
 
-	print "Last result from AS3953:"
+	# print "Last result from AS3953:"
 
-	if (as3935LastInterrupt == 0x00):
-		print "----No Lightning detected---"
+	# if (as3935LastInterrupt == 0x00):
+	# 	print "----No Lightning detected---"
 		
-	if (as3935LastInterrupt == 0x01):
-		print "Noise Floor: %s" % as3935LastStatus
-		as3935LastInterrupt = 0x00
+	# if (as3935LastInterrupt == 0x01):
+	# 	print "Noise Floor: %s" % as3935LastStatus
+	# 	as3935LastInterrupt = 0x00
 
-	if (as3935LastInterrupt == 0x04):
-		print "Disturber: %s" % as3935LastStatus
-		as3935LastInterrupt = 0x00
+	# if (as3935LastInterrupt == 0x04):
+	# 	print "Disturber: %s" % as3935LastStatus
+	# 	as3935LastInterrupt = 0x00
 
-	if (as3935LastInterrupt == 0x08):
-		print "Lightning: %s" % as3935LastStatus
-		as3935LightningCount += 1
-		as3935LastInterrupt = 0x00
+	# if (as3935LastInterrupt == 0x08):
+	# 	print "Lightning: %s" % as3935LastStatus
+	# 	as3935LightningCount += 1
+	# 	as3935LastInterrupt = 0x00
 
-	print "Lightning Count = ", as3935LightningCount
-	print "----------------- "
+	# print "Lightning Count = ", as3935LightningCount
+	# print "----------------- "
 	
-	print "----------------- "
-	print " FRAM Byte Read Test "
-	print "----------------- "
+	# print "----------------- "
+	# print " FRAM Byte Read Test "
+	# print "----------------- "
 
-        print "writing first 3 addresses with random data"
-        for x in range(0,3):
-                value = random.randint(0,255)
-                print "address = %i writing value=%i" % (x, value)
-                fram.write8(x, value)
-        print "----------------- "
+ #        print "writing first 3 addresses with random data"
+ #        for x in range(0,3):
+ #                value = random.randint(0,255)
+ #                print "address = %i writing value=%i" % (x, value)
+ #                fram.write8(x, value)
+ #        print "----------------- "
 
-        print "reading first 3 addresses"
-        for x in range(0,3):
-                print "address = %i value = %i" %(x, fram.read8(x))
-        print "----------------- "
-        print "----------------- "
-	print
+ #        print "reading first 3 addresses"
+ #        for x in range(0,3):
+ #                print "address = %i value = %i" %(x, fram.read8(x))
+ #        print "----------------- "
+ #        print "----------------- "
+	# print
 
 
 
