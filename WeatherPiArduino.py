@@ -15,6 +15,10 @@ import time
 from datetime import datetime
 import random 
 
+from ISStreamer.Streamer import Streamer
+
+streamer = Streamer(bucket_name="Weather Station", ini_file_location="./isstreamer.ini", buffer_size=200)
+
 import subprocess
 import RPi.GPIO as GPIO
 
@@ -146,8 +150,14 @@ while True:
 	#
 
  	currentWindSpeed = weatherStation.current_wind_speed()/1.6
+ 	streamer.log("Wind Speed", currentWindSpeed)
+
   	currentWindGust = weatherStation.get_wind_gust()/1.6
+  	streamer.log("Wind Gust", currentWindGust)
+
   	totalRain = totalRain + weatherStation.get_current_rain_total()/25.4
+  	streamer.log("Total Rain", totalRain)
+
   	print("Rain Total=\t%0.2f in")%(totalRain)
   	print("Wind Speed=\t%0.2f MPH")%(currentWindSpeed)
     	print("MPH wind_gust=\t%0.2f MPH")%(currentWindGust)
@@ -167,8 +177,10 @@ while True:
 	print "Raspberry Pi=\t" + time.strftime("%Y-%m-%d %H:%M:%S")
 	
 	print "DS3231=\t\t%s" % ds3231.read_datetime()
+	ds3231temp = ds3231.getTemp()
+	print "DS3231 Temperature= \t%0.2f C" % ds3231temp
+	streamer.log("DS3231 Temperature (C)", ds3231temp)
 
-	print "DS3231 Temperature= \t%0.2f C" % ds3231.getTemp()
 	# do the AT24C32 eeprom
 
 	# print "----------------- "
@@ -190,10 +202,22 @@ while True:
 	# print " BMP180 Barometer/Temp/Altitude"
 	# print "----------------- "
 
-	print 'Temperature = \t{0:0.2f} C'.format(bmp180.read_temperature())
-	print 'Pressure = \t{0:0.2f} KPa'.format(bmp180.read_pressure()/1000)
-	print 'Altitude = \t{0:0.2f} m'.format(bmp180.read_altitude())
-	print 'Sealevel Pressure = \t{0:0.2f} KPa'.format(bmp180.read_sealevel_pressure()/1000)
+	bmp180temp = bmp180.read_temperature()
+	print 'Temperature = \t{0:0.2f} C'.format(bmp180temp)
+	streamer.log("BMP180 Temperature (C)", bmp180temp)
+
+	bmp180pressure = bmp180.read_pressure()/1000
+	print 'Pressure = \t{0:0.2f} KPa'.format(bmp180pressure)
+	streamer.log("BMP180 Pressure (KPa)", bmp180pressure)
+
+	bmp180altitude = bmp180.read_altitude()
+	print 'Altitude = \t{0:0.2f} m'.format(bmp180altitude)
+	streamer.log("BMP180 Altitude (m)", bmp180altitude)
+
+	bmp180sealevelpressure = bmp180.read_sealevel_pressure()/1000
+	print 'Sealevel Pressure = \t{0:0.2f} KPa'.format(bmp180sealevelpressure)
+	streamer.log("BMP180 Sealevel Pressure (KPa)", bmp180sealevelpressure)
+
 	print "----------------- "
 
 	print "----------------- "
@@ -208,7 +232,10 @@ while True:
 	HTUtemperature = float(splitstring[0])	
 	HTUhumidity = float(splitstring[1])	
 	print "Temperature = \t%0.2f C" % HTUtemperature
+	streamer.log("HTU Temperature (C)", HTUtemperature)
+
 	print "Humidity = \t%0.2f %%" % HTUhumidity
+	streamer.log("HTU Humidity (%)", HTUhumidity)
 	print "----------------- "
 
 	# print "----------------- "
@@ -255,6 +282,6 @@ while True:
 	# print
 
 
-
+	streamer.flush()
 	time.sleep(10.0)
 
