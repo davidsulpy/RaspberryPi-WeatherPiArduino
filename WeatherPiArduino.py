@@ -78,40 +78,40 @@ bmp180 = BMP180.BMP085()
 
 # ad3935 Set up Lightning Detector
 
-as3935 = RPi_AS3935(address=0x03, bus=1)
+# as3935 = RPi_AS3935(address=0x03, bus=1)
 
-as3935.set_indoors(True)
-as3935.set_noise_floor(0)
-as3935.calibrate(tun_cap=0x0F)
+# as3935.set_indoors(True)
+# as3935.set_noise_floor(0)
+# as3935.calibrate(tun_cap=0x0F)
 
-as3935LastInterrupt = 0
-as3935LightningCount = 0
-as3935LastDistance = 0
-as3935LastStatus = ""
+# as3935LastInterrupt = 0
+# as3935LightningCount = 0
+# as3935LastDistance = 0
+# as3935LastStatus = ""
 
-def handle_as3935_interrupt(channel):
-    time.sleep(0.003)
-    global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
-    reason = as3935.get_interrupt()
-    as3935LastInterrupt = reason
-    if reason == 0x01:
-	as3935LastStatus = "Noise Floor too low. Adjusting"
-        as3935.raise_noise_floor()
-    elif reason == 0x04:
-	as3935LastStatus = "Disturber detected - masking"
-        as3935.set_mask_disturber(True)
-    elif reason == 0x08:
-        now = datetime.now().strftime('%H:%M:%S - %Y/%m/%d')
-        distance = as3935.get_distance()
-	as3935LastDistance = distance
-	as3935LastStatus = "Lightning Detected "  + str(distance) + "km away. (%s)" % now
+# def handle_as3935_interrupt(channel):
+#     time.sleep(0.003)
+#     global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
+#     reason = as3935.get_interrupt()
+#     as3935LastInterrupt = reason
+#     if reason == 0x01:
+# 	as3935LastStatus = "Noise Floor too low. Adjusting"
+#         as3935.raise_noise_floor()
+#     elif reason == 0x04:
+# 	as3935LastStatus = "Disturber detected - masking"
+#         as3935.set_mask_disturber(True)
+#     elif reason == 0x08:
+#         now = datetime.now().strftime('%H:%M:%S - %Y/%m/%d')
+#         distance = as3935.get_distance()
+# 	as3935LastDistance = distance
+# 	as3935LastStatus = "Lightning Detected "  + str(distance) + "km away. (%s)" % now
 
 
 
-as3935pin = 25
+# as3935pin = 25
 
-GPIO.setup(as3935pin, GPIO.IN)
-GPIO.add_event_detect(as3935pin, GPIO.RISING, callback=handle_as3935_interrupt)
+# GPIO.setup(as3935pin, GPIO.IN)
+# GPIO.add_event_detect(as3935pin, GPIO.RISING, callback=handle_as3935_interrupt)
 
 ###############
 
