@@ -182,8 +182,6 @@ while True:
 	deltatime = currenttime - starttime
  
 	print "Raspberry Pi=\t" + time.strftime("%Y-%m-%d %H:%M:%S")
-
-	streamer.log("RTC vs Pi Clock Scew", deltatime)
 	
 	print "DS3231=\t\t%s" % ds3231.read_datetime()
 	ds3231temp = ds3231.getTemp()
