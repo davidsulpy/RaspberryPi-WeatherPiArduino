@@ -162,8 +162,15 @@ while True:
   	print("Wind Speed=\t%0.2f MPH")%(currentWindSpeed)
     	print("MPH wind_gust=\t%0.2f MPH")%(currentWindGust)
   	
-	print "Wind Direction=\t\t\t %0.2f Degrees" % weatherStation.current_wind_direction()
-	print "Wind Direction Voltage=\t\t %0.3f V" % weatherStation.current_wind_direction_voltage()
+  	windDirection = weatherStation.current_wind_direction()
+	print "Wind Direction=\t\t\t %0.2f Degrees" % windDirection
+	windDirectionString = "%0.2f" % windDirection
+	streamer.log("Wind Direction (deg)", windDirectionString)
+
+	windDirectionV = weatherStation.current_wind_direction_voltage()
+	print "Wind Direction Voltage=\t\t %0.3f V" % windDirectionV
+	windDirectionVString = "%0.3f" % windDirectionV
+	streamer.log("Wind Direction (V)", windDirectionVString)
 
 	print "----------------- "
 	print "----------------- "
@@ -175,10 +182,12 @@ while True:
 	deltatime = currenttime - starttime
  
 	print "Raspberry Pi=\t" + time.strftime("%Y-%m-%d %H:%M:%S")
+
+	streamer.log("RTC vs Pi Clock Scew", deltatime)
 	
 	print "DS3231=\t\t%s" % ds3231.read_datetime()
 	ds3231temp = ds3231.getTemp()
-	print "DS3231 Temperature= \t%0.2f C" % ds3231temp
+	print "RTC Temperature= \t%0.2f C" % ds3231temp
 	streamer.log("DS3231 Temperature (C)", ds3231temp)
 
 	# do the AT24C32 eeprom
@@ -283,5 +292,5 @@ while True:
 
 
 	streamer.flush()
-	time.sleep(10.0)
+	time.sleep(7.0)
 
